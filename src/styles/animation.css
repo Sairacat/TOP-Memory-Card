@@ -1,0 +1,7 @@
+@keyframes rotate {
+    from{
+        transform: rotateY(180deg);
+    }to {
+        transform: rotateY(1440deg);
+    }
+}

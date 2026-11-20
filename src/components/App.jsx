@@ -5,12 +5,14 @@ function App() {
   const [cards, setCards] = useState(null);
   const [loading, setLoading] = useState(true);
   const [score, setScore] = useState({ score: 0, record: 0 });
+  const [round, setRound] = useState(1);
+  const [gameState, setGameState] = useState("play");
 
   useEffect(() => {
     let ignore = false;
     const selectedId = new Set();
 
-    const apiUrls = Array.from({ length: 12 }, () => {
+    const apiUrls = Array.from({ length: 8 }, () => {
       let id;
       do {
         id = generateRandomId();
@@ -55,22 +57,18 @@ function App() {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [round]);
 
-  function shuffleCards(id) {
+  function shuffleCards(cards) {
     const newCards = cards.map((card) => {
-      if (card.id === id) {
-        return { ...card, isClicked: true };
-      } else {
-        return { ...card };
-      }
+      return { ...card };
     });
-    for (let i = cards.length - 1; i > 0; i--) {
+    for (let i = newCards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [newCards[i], newCards[j]] = [newCards[j], newCards[i]];
     }
 
-    setCards(newCards);
+    return newCards;
   }
 
   function updateScore() {
@@ -85,6 +83,38 @@ function App() {
     }));
   }
 
+  function handleCardClick(id) {
+    const targetCard = cards.find((card) => card.id === id);
+    console.log(targetCard);
+    if (!targetCard) return;
+
+    if (targetCard.isClicked) {
+      setGameState("lost");
+      updateRecord();
+      console.log("this card was clicked before");
+      return;
+    }
+
+    const nextCards = cards.map((card) => {
+      if (card.id === id) {
+        return { ...card, isClicked: true };
+      } else {
+        return card;
+      }
+    });
+
+    const isWon = nextCards.every((card) => card.isClicked);
+    if (isWon) {
+      updateScore();
+      updateRecord();
+      setCards(nextCards);
+      setGameState("won");
+    } else {
+      updateScore();
+      setCards(shuffleCards(nextCards));
+    }
+  }
+
   return (
     <div>
       {loading ? (
@@ -92,10 +122,10 @@ function App() {
       ) : (
         <Gameboard
           cards={cards}
-          handleShuffle={shuffleCards}
           score={score}
-          handleScore={updateScore}
-          handleRecord={updateRecord}
+          round={round}
+          gameState={gameState}
+          handleCardClick={handleCardClick}
         />
       )}
     </div>

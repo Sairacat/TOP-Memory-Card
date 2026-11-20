@@ -1,35 +1,86 @@
+.game {
+    font-family: 'cute', sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 header {
-    padding: 1rem 2rem;
     text-align: center;
+
 }
 
 .gameboard {
-    max-width: 860px;
-    padding: 0 1rem;
-    margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 50px;
 }
 
 .score-area {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    gap: 100px;
-    padding: 2rem 0;
 }
 
 .score-unit {
     font-size: 24px;
 }
 
-.card {
+.card-slot {
+    perspective: 1000px;
+    aspect-ratio: 3/4;
+}
+
+.rotate-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotate 3s cubic-bezier(.19,2.01,.92,.92) forwards;
+}
+
+.card-face,
+.card-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    backface-visibility: hidden;
+}
+
+.card-face {
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    font-size: 16px;
+    gap: 10px;
+    font-size: 20px;
     font-weight: 600;
+    background-color: white;
+    padding: 1rem 0;
+    transform-origin: center center;
+}
+
+.card-back {
+    background-image: url(../assets/back.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotateY(180deg);
+}
+
+.game-over {
+    animation: none;
+}
+
+.reset-area {
+    width: 300px;
+    height: 400px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 24px;
+    background-color: red;
 }
