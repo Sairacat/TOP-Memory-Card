@@ -1,20 +1,27 @@
 import { useState, useEffect } from "react";
 import { Gameboard } from "./Gameboard.jsx";
 
+  const levelMap = {
+      easy: 4,
+      normal: 8,
+      hard: 12,
+  }
+
 function App() {
   const [cards, setCards] = useState(null);
   const [loading, setLoading] = useState(true);
   const [score, setScore] = useState({ score: 0, record: 0 });
   const [round, setRound] = useState(1);
-  const [level, setLevel] = useState(8)
+  const [level, setLevel] = useState('normal');
   const [gameState, setGameState] = useState("play");
+  const [loadCount, setLoadCount] = useState(0)
   const [failedCard, setFailedCard] = useState(null);
 
   useEffect(() => {
     let ignore = false;
     const selectedId = new Set();
 
-    const apiUrls = Array.from({ length: level }, () => {
+    const apiUrls = Array.from({ length: levelMap[level] }, () => {
       let id;
       do {
         id = generateRandomId();
@@ -61,7 +68,7 @@ function App() {
     return () => {
       ignore = true;
     };
-  }, [round]);
+  }, [loadCount, level]);
 
   function shuffleCards(cards) {
     const newCards = cards.map((card) => {
@@ -111,7 +118,6 @@ function App() {
     const isWon = nextCards.every((card) => card.isClicked);
     if (isWon) {
       updateScore();
-      updateRecord();
       setCards(nextCards);
       setGameState("won");
     } else {
@@ -120,12 +126,19 @@ function App() {
     }
   }
 
-  function handleNewRound(level) {
-    setRound(prev => prev + 1);
-    setLoading(true);
+  function handleNewRound(selectedLevel) {
+    if(gameState === 'play') return;
+    if(gameState === 'lost') {
+      setScore(prev => ({...prev, score:0,}));
+      setRound(1);
+    }else {
+      setScore(prev => ({...prev}));
+      setRound(prev => prev+1);
+    }
     setGameState('play');
-    setScore(prev => ({...prev, score: 0}))
-    setLevel(level)
+    setLoading(true);
+    setLevel(selectedLevel);
+    setLoadCount(prev => prev+1);
   }
 
   return (

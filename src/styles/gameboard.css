@@ -61,6 +61,17 @@ header {
     background-color: white;
     padding: 1rem 0;
     transform-origin: center center;
+    border: 3px solid #e2e8f0;
+    box-shadow: 0 4px 12px #0f172a0d;
+    transition: all 0.25s ease;
+}
+
+.card-face:hover {
+    border-color: #cbd5e1;
+    box-shadow:
+    0 12px 24px -4px #0f172a1a,
+    0 4px 8px -2px #0f172a0f;
+    transform: translateY(-2px);
 }
 
 .card-back {

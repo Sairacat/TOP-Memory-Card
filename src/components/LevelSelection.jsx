@@ -1,27 +1,12 @@
 import { useState } from "react";
 import "../styles/levelSelection.css";
 
-  const levelMap = {
-      easy: 4,
-      normal: 8,
-      hard: 12,
-  }
-
 function LevelSelection({handleNewRound, level}) {
-  const [selected, setSelected] = useState(() => {
-    let selected;
-    Object.entries(levelMap).forEach(([selectedLevel, cards]) => {
-      if(cards === level) {
-        selected = selectedLevel;
-        return;
-      }
-    })
-    return selected
-  });
+  const [selected, setSelected] = useState(level);
 
   function handleRestart() {
     if(!selected) return;
-    handleNewRound(levelMap[selected]);
+    handleNewRound(selected);
   }
 
   return (
