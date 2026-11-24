@@ -1,8 +1,18 @@
 import "../styles/gameboard.css";
-import { ResetArea } from "./ResetArea.jsx";
+import { Result } from "./Result.jsx";
 import { ButtonCard } from "./ButtonCard.jsx";
+import { LevelSelection } from "./LevelSelection.jsx";
 
-function Gameboard({ cards, score, round, gameState, handleCardClick }) {
+function Gameboard({
+  cards,
+  score,
+  round,
+  gameState,
+  handleCardClick,
+  failedCard,
+  handleNewRound,
+  level,
+}) {
   return (
     <div className="game">
       <header>
@@ -22,7 +32,12 @@ function Gameboard({ cards, score, round, gameState, handleCardClick }) {
           {round}
         </div>
       </section>
-      <main className="gameboard" key={crypto.randomUUID()}>
+      <main
+        className="gameboard"
+        key={
+          crypto.randomUUID() // To make sure every card in this gameboard will be animated again, which is not efficient.
+        }
+      >
         {cards.map((card) => (
           <ButtonCard
             key={card.id}
@@ -32,9 +47,13 @@ function Gameboard({ cards, score, round, gameState, handleCardClick }) {
           />
         ))}
       </main>
-      {gameState !== "play" ? <ResetArea gameState={gameState} /> : null}
+      {gameState !== "play" ? (
+        <Result gameState={gameState} failedCard={failedCard} />
+      ) : null}
+      <LevelSelection handleNewRound={handleNewRound} level={level} />
     </div>
   );
 }
+
 
 export { Gameboard };

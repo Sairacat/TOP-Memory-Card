@@ -6,17 +6,19 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [score, setScore] = useState({ score: 0, record: 0 });
   const [round, setRound] = useState(1);
+  const [level, setLevel] = useState(8)
   const [gameState, setGameState] = useState("play");
+  const [failedCard, setFailedCard] = useState(null);
 
   useEffect(() => {
     let ignore = false;
     const selectedId = new Set();
 
-    const apiUrls = Array.from({ length: 8 }, () => {
+    const apiUrls = Array.from({ length: level }, () => {
       let id;
       do {
         id = generateRandomId();
-      } while (selectedId.has(id));
+      } while (selectedId.has(id));// To prevent same cards in a same round.
       selectedId.add(id);
       return `https://pokeapi.co/api/v2/pokemon-form/${id}`;
     });
@@ -44,8 +46,10 @@ function App() {
         const results = await Promise.all(requestedPromises);
 
         if (ignore) return;
-        setCards(results);
-        setLoading(false);
+        setTimeout(() => {
+          setCards(results);
+          setLoading(false);
+        }, 1500);
         console.log(results);
       } catch {
         console.log("Error occured");
@@ -91,6 +95,7 @@ function App() {
     if (targetCard.isClicked) {
       setGameState("lost");
       updateRecord();
+      setFailedCard({name: targetCard.name, imgUrl: targetCard.imgUrl})
       console.log("this card was clicked before");
       return;
     }
@@ -115,6 +120,14 @@ function App() {
     }
   }
 
+  function handleNewRound(level) {
+    setRound(prev => prev + 1);
+    setLoading(true);
+    setGameState('play');
+    setScore(prev => ({...prev, score: 0}))
+    setLevel(level)
+  }
+
   return (
     <div>
       {loading ? (
@@ -126,6 +139,9 @@ function App() {
           round={round}
           gameState={gameState}
           handleCardClick={handleCardClick}
+          failedCard={failedCard}
+          handleNewRound={handleNewRound}
+          level={level}
         />
       )}
     </div>
@@ -133,7 +149,7 @@ function App() {
 }
 
 function generateRandomId() {
-  return Math.floor(Math.random() * 99) + 1;
+  return Math.floor(Math.random() * 199) + 1;
 }
 
 export default App;

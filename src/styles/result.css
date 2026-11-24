@@ -1,0 +1,46 @@
+.reset-area {
+    position: relative;
+    width: 640px;
+    position: fixed;
+    border: none;
+    border-radius: 16px;
+    background-color: white;
+    font-size: 24px;
+}
+
+.reset-area::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.reset-area:open {
+    animation: drop-in 0.5s ease forwards;
+}
+
+
+.reset-area > h2 {
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.lost-scene,
+.won-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.lost-scene > img,
+.won-scene > img {
+    width: 50%;
+}
+
+
+.close-btn {
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    right: 20px;
+    top: 20px;
+}
