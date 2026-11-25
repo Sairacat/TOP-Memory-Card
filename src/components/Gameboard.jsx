@@ -1,17 +1,19 @@
 import "../styles/gameboard.css";
+import "../styles/levelSelection.css";
 import { Result } from "./Result.jsx";
 import { ButtonCard } from "./ButtonCard.jsx";
-import { LevelSelection } from "./LevelSelection.jsx";
 
 function Gameboard({
   cards,
-  score,
-  round,
+  gameInfo,
   gameState,
-  handleCardClick,
   failedCard,
-  handleNewRound,
   level,
+  handleCardClick,
+  handleStartNewGame,
+  handleOneMoreRound,
+  handleResetThisRound,
+  handleBackToHome,
 }) {
   return (
     <div className="game">
@@ -21,15 +23,15 @@ function Gameboard({
       <section aria-label="score-section" className="score-area">
         <div className="score-unit">
           <span>Score: </span>
-          {score.score}
+          {gameInfo[level].currentScore}
         </div>
         <div className="score-unit">
           <span>Record: </span>
-          {score.record}
+          {gameInfo[level].record}
         </div>
         <div className="score-unit">
           <span>Round: </span>
-          {round}
+          {gameInfo[level].rounds.length}
         </div>
       </section>
       <main
@@ -50,10 +52,43 @@ function Gameboard({
       {gameState !== "play" ? (
         <Result gameState={gameState} failedCard={failedCard} />
       ) : null}
-      <LevelSelection handleNewRound={handleNewRound} level={level} />
+      <aside aria-labelledby="button-panel" className="button-panel">
+        <div className="button-set">
+          <button className="back-btn" onClick={handleBackToHome}>
+            BACK TO HOME
+          </button>
+          <button
+            className="restart-btn"
+            onClick={() => {
+              handleStartNewGame(level);
+            }}
+          >
+            START NEW GAME
+          </button>
+          {gameState === "won" && (
+            <button
+              className="oneMore-btn"
+              onClick={() => {
+                handleOneMoreRound(level);
+              }}
+            >
+              ONE MORE ROUND
+            </button>
+          )}
+          {gameState === "play" && (
+            <button
+              className="reset-btn"
+              onClick={() => {
+                handleResetThisRound(level);
+              }}
+            >
+              RESET THIS ROUND
+            </button>
+          )}
+        </div>
+      </aside>
     </div>
   );
 }
-
 
 export { Gameboard };
