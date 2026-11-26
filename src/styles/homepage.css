@@ -1,0 +1,127 @@
+.level-set {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    bottom: 0;
+
+}
+
+.level-set > button {
+    border: none;
+    height: 50px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+
+.easy {
+    background-color: greenyellow;
+    flex: 1;
+}
+
+.normal {
+    background-color: orange;
+    flex: 1;
+}
+
+.hard {
+    background-color: red;
+    flex: 1;
+}
+
+.level-set > .isSelected {
+    flex: 4;
+}
+
+.homepage {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    position: relative;
+    font-family: 'cute', sans-serif;
+}
+
+.upper {
+    background-color: #C22C28;
+    border-bottom: 16px solid black;
+}
+
+.lower {
+    border-top: 16px solid black;
+}
+
+.start-btn {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    border-radius: 101px;
+    border: 32px solid black;
+    background-color: white;
+    font-size: 36px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    cursor: pointer;
+    transition: all 0.35s ease;
+    z-index: 99;
+}
+
+.start-btn:hover {
+    background-color: #E0F0FA;
+    color: #1E3A5F;
+}
+
+.expand {
+    animation: expand 1.5s linear;
+}
+
+.record-panel {
+    position: absolute;
+    left: 20px;
+    width: 200px;
+}
+
+.record-content {
+    background-color: white;
+    border: 2px solid #e2e8f0;
+    border-bottom: none;
+    border-top: none;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: all 0.3s ease;
+    padding: none;
+}
+
+.content-inner {
+    overflow: hidden;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 1rem;
+}
+
+.content-inner > p {
+    font-size: 18px;
+}
+
+.record-btn {
+    width: 100%;
+    border: none;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    background-color: whitesmoke;
+    cursor: pointer;
+    transition: all 0.35s ease;
+}
+
+.record-btn:hover {
+    background-color: #B8DAF6;
+    color: white;
+}
+
+.show-record {
+    grid-template-rows: 1fr;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}

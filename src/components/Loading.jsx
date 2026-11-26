@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import '../styles/loading.css';
 
 const levelMap = {
     easy: 4,
@@ -60,7 +61,9 @@ function Loading({level, handleCompleteLoading}) {
   }, [level, handleCompleteLoading]);
 
     return(
-        <h1>Loading...</h1>
+        <div className="loading-background">
+          <h1 className="loading">Loading...</h1>
+        </div>
     )
 }
 

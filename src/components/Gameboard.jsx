@@ -1,5 +1,4 @@
 import "../styles/gameboard.css";
-import "../styles/levelSelection.css";
 import { Result } from "./Result.jsx";
 import { ButtonCard } from "./ButtonCard.jsx";
 

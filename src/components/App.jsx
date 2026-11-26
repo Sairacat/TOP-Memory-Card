@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 import { Gameboard } from "./Gameboard.jsx";
 import { Homepgae } from "./Homepage.jsx";
 import { Loading } from "./Loading.jsx";
@@ -7,30 +7,31 @@ function App() {
   const [pageIndex, setPageIndex] = useState(0);
   const [cards, setCards] = useState(null);
   const [gameInfo, setGameInfo] = useState({
-    easy:{currentScore:0, record: 0, rounds:[0,]},
-    normal:{currentScore:0, record: 0, rounds:[0,]},
-    hard:{currentScore:0, record:0, rounds:[0,]},
+    easy: { currentScore: 0, record: 0, rounds: [0] },
+    normal: { currentScore: 0, record: 0, rounds: [0] },
+    hard: { currentScore: 0, record: 0, rounds: [0] },
   });
-  const [level, setLevel] = useState('normal');
+  const [level, setLevel] = useState("normal");
   const [gameState, setGameState] = useState("play");
   const [failedCard, setFailedCard] = useState(null);
 
-
   function startGame(selectedLevel) {
-    setPageIndex(1);
-    setLevel(selectedLevel);
-    setGameInfo(prev => {
-      const prevLevel = prev[level];
-      return {
-        ...prev,
-        [level]: {
-          ...prevLevel,
-          currentScore: 0,
-          rounds:[0,]
-        }
-      }
-    })
-    setGameState('play');
+    setTimeout(() => {
+      setPageIndex(1);
+      setLevel(selectedLevel);
+      setGameInfo((prev) => {
+        const prevLevel = prev[level];
+        return {
+          ...prev,
+          [level]: {
+            ...prevLevel,
+            currentScore: 0,
+            rounds: [0],
+          },
+        };
+      });
+      setGameState("play");
+    }, 350);
   }
 
   function completeLoading(cards) {
@@ -51,28 +52,31 @@ function App() {
   }
 
   function updateScore() {
-    setGameInfo(prev => {
+    setGameInfo((prev) => {
       const currentLevel = prev[level];
       const updatedRounds = currentLevel.rounds.slice();
-      updatedRounds[updatedRounds.length-1] += 1;
+      updatedRounds[updatedRounds.length - 1] += 1;
 
       const updatedScore = calculateCurrentScore(updatedRounds);
-      
+
       return {
         ...prev,
         [level]: {
           ...currentLevel,
           currentScore: updatedScore,
           rounds: updatedRounds,
-        }
-      }
-    })
+        },
+      };
+    });
   }
 
   function updateRecord() {
-    setGameInfo(prev => {
+    setGameInfo((prev) => {
       const currentLevel = prev[level];
-      const updatedRecord = Math.max(currentLevel.currentScore, currentLevel.record);
+      const updatedRecord = Math.max(
+        currentLevel.currentScore,
+        currentLevel.record,
+      );
 
       return {
         ...prev,
@@ -80,9 +84,9 @@ function App() {
           ...currentLevel,
           currentScore: 0,
           record: updatedRecord,
-        }
-      }
-    })
+        },
+      };
+    });
   }
 
   function handleCardClick(id) {
@@ -93,7 +97,7 @@ function App() {
     if (targetCard.isClicked) {
       setGameState("lost");
       updateRecord();
-      setFailedCard({name: targetCard.name, imgUrl: targetCard.imgUrl})
+      setFailedCard({ name: targetCard.name, imgUrl: targetCard.imgUrl });
       console.log("this card was clicked before");
       return;
     }
@@ -118,27 +122,30 @@ function App() {
   }
 
   function handleStartNewGame(level) {
-    setGameInfo(prev => {
+    setGameInfo((prev) => {
       const currentLevel = prev[level];
-      const updatedRecord = Math.max(currentLevel.currentScore, currentLevel.record);
+      const updatedRecord = Math.max(
+        currentLevel.currentScore,
+        currentLevel.record,
+      );
 
       return {
         ...prev,
-        [level]:{
+        [level]: {
           ...currentLevel,
           currentScore: 0,
-          rounds: [0,],
+          rounds: [0],
           record: updatedRecord,
-        }
-      }
-    })
+        },
+      };
+    });
 
-    setGameState('play');
+    setGameState("play");
     setPageIndex(1);
   }
 
   function handleOneMoreRound(level) {
-    setGameInfo(prev => {
+    setGameInfo((prev) => {
       const currentLevel = prev[level];
       const updatedRounds = currentLevel.rounds.slice();
       updatedRounds.push(0);
@@ -148,19 +155,19 @@ function App() {
         [level]: {
           ...currentLevel,
           rounds: updatedRounds,
-        }
-      }
-    })
+        },
+      };
+    });
 
-    setGameState('play');
+    setGameState("play");
     setPageIndex(1);
   }
 
   function handleResetThisRound(level) {
-    setGameInfo(prev => {
+    setGameInfo((prev) => {
       const currentLevel = prev[level];
       const updatedRounds = currentLevel.rounds.slice();
-      updatedRounds[updatedRounds.length-1] = 0;
+      updatedRounds[updatedRounds.length - 1] = 0;
 
       const updatedScore = calculateCurrentScore(updatedRounds);
 
@@ -170,9 +177,9 @@ function App() {
           ...currentLevel,
           currentScore: updatedScore,
           rounds: updatedRounds,
-        }
-      }
-    })
+        },
+      };
+    });
 
     const newCards = resetCards(cards);
 
@@ -180,18 +187,18 @@ function App() {
   }
 
   function resetCards() {
-    const newCards = cards.map(card => {
-      if(card.isClicked) {
+    const newCards = cards.map((card) => {
+      if (card.isClicked) {
         return {
           ...card,
           isClicked: false,
-        }
-      }else {
+        };
+      } else {
         return {
           ...card,
-        }
+        };
       }
-    })
+    });
 
     return newCards;
   }
@@ -202,9 +209,13 @@ function App() {
 
   return (
     <div>
-      {pageIndex === 0 && <Homepgae handleStartGame={startGame} level={level}/>}
-      {pageIndex === 1 && <Loading level={level} handleCompleteLoading={completeLoading}/>}
-      {pageIndex === 2 &&
+      {pageIndex === 0 && (
+        <Homepgae handleStartGame={startGame} level={level} gameInfo={gameInfo}/>
+      )}
+      {pageIndex === 1 && (
+        <Loading level={level} handleCompleteLoading={completeLoading} />
+      )}
+      {pageIndex === 2 && (
         <Gameboard
           cards={cards}
           gameInfo={gameInfo}
@@ -217,13 +228,13 @@ function App() {
           handleResetThisRound={handleResetThisRound}
           handleBackToHome={handleBackToHome}
         />
-      }
+      )}
     </div>
   );
 }
 
 function calculateCurrentScore(arr) {
-  return arr.reduce((prev, cur) => (prev + cur), 0);
+  return arr.reduce((prev, cur) => prev + cur, 0);
 }
 
 export default App;
