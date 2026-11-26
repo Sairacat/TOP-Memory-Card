@@ -22,8 +22,8 @@ A pokemon themed memory card game built with React.
 - Asynchronous JavaScript (`async`/`await` & `Promise.all()`) for fetching API data
 
 ## Component Structure & How they work
-src
-├── components
+src/
+└── components/
     ├── App.jsx
     ├── ButtonCard.jsx
     ├── Gameboard.jsx
